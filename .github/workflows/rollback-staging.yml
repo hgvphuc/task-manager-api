@@ -1,0 +1,31 @@
+name: Rollback Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Commit SHA to roll back to'
+        required: true
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: staging # do not need required reviewers
+    steps:
+      - name: Retag and push
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-image:sha-${{ github.event.inputs.sha }}
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-image:sha-${{ github.event.inputs.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-image:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-image:latest
+
+      # - name: Deploy rollback
+      #   uses: appleboy/ssh-action@v1
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd /opt/myapp
+      #       docker compose pull
+      #       docker compose up -d
+      #       docker image prune -f
