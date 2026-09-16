@@ -1,4 +1,4 @@
-name: Build and Push (action-based)
+name: Build and Push
 
 on:
   push:
