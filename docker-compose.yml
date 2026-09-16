@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    image: hoangphuc99/task-manager-image:v1
+    image: hoangphuc99/task-manager-image:latest
     container_name: task-manager-api
     ports:
       - '3000:3000'
