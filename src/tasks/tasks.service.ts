@@ -19,6 +19,7 @@ export class TasksService {
   }
 
   async findAll(findTasksDto: FindTasksDto) {
+    throw Error('Bump!');
     const { status, priority, sortOrder, page = 1, limit = 10 } = findTasksDto;
 
     const where: Record<string, any> = {};
