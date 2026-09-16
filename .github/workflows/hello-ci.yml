@@ -14,3 +14,9 @@ jobs:
         run: |
           date
           whoami
+
+      - name: Create a file
+        run: touch test.txt
+
+      - name: List files
+        run: ls -la

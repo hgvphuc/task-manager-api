@@ -1,0 +1,21 @@
+name: Job Isolation Demo
+
+on:
+  push:
+
+jobs:
+  create-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a file
+        run: touch test.txt
+
+      - name: List files (proof it exists here)
+        run: ls -la
+
+  look-for-file:
+    runs-on: ubuntu-latest
+    needs: create-file # waits for create-file to finish first
+    steps:
+      - name: List files (will NOT show test.txt)
+        run: ls -la
