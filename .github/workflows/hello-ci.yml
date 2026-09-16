@@ -1,0 +1,16 @@
+name: Hello CI
+
+on:
+  push:
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "Hello CI"
+
+      - name: Show current date and user
+        run: |
+          date
+          whoami
