@@ -1,0 +1,44 @@
+services:
+  app:
+    build: .
+    image: hoangphuc99/task-manager-image:v1
+    container_name: task-manager-api
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: task-manager
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mynet
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: task-manager
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mynet
+
+volumes:
+  pgdata:
+
+networks:
+  mynet:
